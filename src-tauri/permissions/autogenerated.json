@@ -1,0 +1,12 @@
+{
+  "$schema": "../gen/schemas/permission-schema.json",
+  "identifier": "allow-all",
+  "description": "Allows all custom commands for Moza HUD",
+  "commands": {
+    "allow": [
+      "get_telemetry",
+      "set_click_through",
+      "exit_app"
+    ]
+  }
+}
