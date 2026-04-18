@@ -5,6 +5,11 @@ description = "Moza Racing HUD"
 authors = ["P4WN3D"]
 edition = "2021"
 
+[lib]
+name = "hud"
+path = "src/lib.rs"
+
+
 [build-dependencies]
 tauri-build = { version = "2.0.0-rc", features = [] }
 

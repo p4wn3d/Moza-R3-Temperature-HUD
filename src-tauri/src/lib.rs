@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader, Seek, SeekFrom};
 use std::path::PathBuf;
-use tauri::{Runtime, Window};
+use tauri::{Runtime, Window, Manager};
 use serde::Serialize;
 
 #[derive(Serialize, Clone, Default)]
@@ -9,16 +9,6 @@ struct TelemetryData {
     controller: f32,
     mos: f32,
     motor: f32,
-}
-
-#[tauri::command]
-pub async fn set_click_through<R: Runtime>(window: Window<R>, ignore: bool) -> Result<(), String> {
-    window.set_ignore_cursor_events(ignore).map_err(|e| e.to_string())
-}
-
-#[tauri::command]
-pub fn get_telemetry() -> TelemetryData {
-    get_moza_telemetry().unwrap_or_default()
 }
 
 fn get_moza_telemetry() -> Option<TelemetryData> {
@@ -60,16 +50,30 @@ fn get_moza_telemetry() -> Option<TelemetryData> {
     Some(last_data)
 }
 
-#[tauri::command]
-pub fn exit_app() {
-    std::process::exit(0);
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![get_telemetry, set_click_through, exit_app])
+        .invoke_handler(tauri::generate_handler![
+            get_telemetry,
+            set_click_through,
+            exit_app
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command]
+fn get_telemetry() -> TelemetryData {
+    get_moza_telemetry().unwrap_or_default()
+}
+
+#[tauri::command]
+async fn set_click_through<R: Runtime>(window: Window<R>, ignore: bool) -> Result<(), String> {
+    window.set_ignore_cursor_events(ignore).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+fn exit_app() {
+    std::process::exit(0);
 }
