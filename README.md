@@ -1,24 +1,54 @@
-# Moza Racing HUD Overlay
+# Moza Racing HUD Overlay 🏎️🔥
 
-Lightweight, high-performance racing HUD for Moza R3/R5/R9 wheel bases.
+[English](#english) | [Русский](#русский)
 
-## Features
-- Real-time temperature monitoring (Controller, MOS, Motor)
-- 5-minute trend graphs
-- Transparent, click-through overlay mode
-- Drag-and-drop positioning
-- Low system impact
+---
 
-## Installation
-1. Go to [Releases](https://github.com/YOUR_USERNAME/YOUR_REPO/releases)
-2. Download `Moza.HUD_x64_en-US.msi` or the standalone `.exe`
-3. Run and enjoy!
+## English
 
-## Development
+Lightweight, high-performance racing HUD for Moza R3/R5/R9 wheel bases. Monitor your hardware temperatures in real-time without leaving the track.
+
+### 🌟 Features
+- **Real-time Monitoring**: Track Controller, MOS, and Motor Stator temperatures.
+- **Trend Graphs**: 5-minute history sparklines to see how your base is heating up.
+- **Stealth Overlay**: Transparent, borderless window that stays on top.
+- **Click-Through**: Interaction-free mode to prevent accidental clicks while racing.
+- **Drag & Drop**: Position the HUD anywhere on your screen.
+- **Zero Impact**: Rust-based backend ensures minimal CPU/RAM usage.
+
+### 🚀 How to use
+1. Download the latest version from [Releases](https://github.com/p4wn3d/Moza-R3-Temperature-HUD/releases).
+2. Launch Moza Pit House.
+3. Run `Moza_HUD.exe`.
+4. Drag to move, right-click (if enabled) to close.
+
+---
+
+## Русский
+
+Легкий и производительный оверлей (HUD) для рулевых баз Moza R3/R5/R9. Мониторинг температуры оборудования в реальном времени прямо поверх игры.
+
+### 🌟 Особенности
+- **Мониторинг в реальном времени**: Температуры контроллера, MOS и статора двигателя.
+- **Графики трендов**: Динамические графики за последние 5 минут.
+- **Прозрачный оверлей**: Окно без рамок, которое всегда находится поверх игры.
+- **Сквозной клик**: Режим «прозрачности» для мыши, чтобы случайно не кликнуть по HUD во время гонки.
+- **Drag & Drop**: Перетаскивайте HUD в любое удобное место экрана.
+- **Zero Impact**: Написано на Rust — минимальное потребление ресурсов системы.
+
+### 🚀 Как использовать
+1. Скачайте последнюю версию из раздела [Releases](https://github.com/p4wn3d/Moza-R3-Temperature-HUD/releases).
+2. Запустите Moza Pit House.
+3. Запустите `Moza_HUD.exe`.
+4. Перетаскивайте мышкой для позиционирования.
+
+---
+
+## Development / Разработка
+
 ```bash
 npm install
 npm run tauri dev
 ```
 
-## Credits
-Built with Tauri v2 and Next.js.
+Built with **Tauri v2** and **Next.js**.
