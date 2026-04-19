@@ -1,0 +1,13 @@
+{
+  "identifier": "default",
+  "description": "Default permissions for the HUD",
+  "windows": ["main"],
+  "permissions": [
+    "core:window:allow-start-dragging",
+    "core:window:allow-set-ignore-cursor-events",
+    "core:window:allow-close",
+    "core:window:allow-set-focus",
+    "shell:allow-open",
+    "core:default"
+  ]
+}

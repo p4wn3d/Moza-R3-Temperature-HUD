@@ -54,6 +54,12 @@ fn get_moza_telemetry() -> Option<TelemetryData> {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
+        .setup(|app| {
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.set_always_on_top(true);
+            }
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             get_telemetry,
             set_click_through,

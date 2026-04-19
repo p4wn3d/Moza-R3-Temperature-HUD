@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 import { Thermometer, MousePointer2, X, Activity, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface Telemetry {
@@ -58,15 +59,27 @@ export default function HUD() {
     await invoke('exit_app');
   };
 
+  const handleManualDrag = async (e: React.MouseEvent) => {
+    // Only drag if it's the primary mouse button and not on a button/interactive element
+    if (e.button === 0 && !(e.target as HTMLElement).closest('button')) {
+      await getCurrentWindow().startDragging();
+    }
+  };
+
   if (!mounted) return null;
 
   const getTempColor = (temp: number) => temp >= 50 ? 'text-[#FF5F00]' : 'text-white';
 
   return (
-    <main className="h-screen w-screen p-2 flex flex-col font-sans select-none overflow-hidden bg-transparent">
+    <main 
+      className="h-screen w-screen p-2 flex flex-col font-sans select-none overflow-hidden bg-black/1"
+      data-tauri-drag-region
+      onMouseDown={handleManualDrag}
+    >
       {/* HUD Container */}
       <div 
         className="racing-glass rounded-xl p-3 flex flex-col gap-2 relative border-l-4 border-l-[#FF5F00] shadow-2xl transition-all"
+        data-tauri-drag-region
       >
         {/* Header / Drag Handle */}
         <div 
@@ -77,7 +90,7 @@ export default function HUD() {
             <div className="w-1.5 h-1.5 rounded-full bg-[#FF5F00] animate-pulse" />
             <span data-tauri-drag-region className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-400">Moza HUD</span>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1" onMouseDown={(e) => e.stopPropagation()}>
              <button 
               onClick={() => setShowGraph(!showGraph)}
               className="p-1 rounded-md bg-white/5 text-gray-400 hover:bg-white/20 transition-colors"
@@ -103,54 +116,54 @@ export default function HUD() {
         </div>
 
         {/* 3 Temperatures Grid */}
-        <div className="grid grid-cols-3 gap-1">
+        <div className="grid grid-cols-3 gap-1" data-tauri-drag-region>
           {/* Controller */}
-          <div className="flex flex-col">
-            <span className="text-[7px] uppercase text-gray-500 font-bold">Controller</span>
-            <div className="flex items-baseline gap-1">
-              <span className={`text-xl font-black italic transition-colors duration-500 ${getTempColor(data.controller)}`}>
+          <div className="flex flex-col" data-tauri-drag-region>
+            <span className="text-[7px] uppercase text-gray-500 font-bold" data-tauri-drag-region>Controller</span>
+            <div className="flex items-baseline gap-1" data-tauri-drag-region>
+              <span className={`text-xl font-black italic transition-colors duration-500 ${getTempColor(data.controller)}`} data-tauri-drag-region>
                 {data.controller.toFixed(0)}
               </span>
-              <span className="text-[9px] text-[#FF5F00] font-bold">°C</span>
+              <span className="text-[9px] text-[#FF5F00] font-bold" data-tauri-drag-region>°C</span>
             </div>
           </div>
           
           {/* MOS */}
-          <div className="flex flex-col border-x border-white/5 px-2">
-            <span className="text-[7px] uppercase text-gray-500 font-bold">MOS</span>
-            <div className="flex items-baseline gap-1">
-              <span className={`text-xl font-black italic transition-colors duration-500 ${getTempColor(data.mos)}`}>
+          <div className="flex flex-col border-x border-white/5 px-2" data-tauri-drag-region>
+            <span className="text-[7px] uppercase text-gray-500 font-bold" data-tauri-drag-region>MOS</span>
+            <div className="flex items-baseline gap-1" data-tauri-drag-region>
+              <span className={`text-xl font-black italic transition-colors duration-500 ${getTempColor(data.mos)}`} data-tauri-drag-region>
                 {data.mos.toFixed(1)}
               </span>
-              <span className="text-[9px] text-[#FF5F00] font-bold">°C</span>
+              <span className="text-[9px] text-[#FF5F00] font-bold" data-tauri-drag-region>°C</span>
             </div>
           </div>
 
           {/* Motor */}
-          <div className="flex flex-col">
-            <span className="text-[7px] uppercase text-gray-500 font-bold">Motor</span>
-            <div className="flex items-baseline gap-1">
-              <span className={`text-xl font-black italic transition-colors duration-500 ${getTempColor(data.motor)}`}>
+          <div className="flex flex-col" data-tauri-drag-region>
+            <span className="text-[7px] uppercase text-gray-500 font-bold" data-tauri-drag-region>Motor</span>
+            <div className="flex items-baseline gap-1" data-tauri-drag-region>
+              <span className={`text-xl font-black italic transition-colors duration-500 ${getTempColor(data.motor)}`} data-tauri-drag-region>
                 {data.motor.toFixed(1)}
               </span>
-              <span className="text-[9px] text-[#FF5F00] font-bold">°C</span>
+              <span className="text-[9px] text-[#FF5F00] font-bold" data-tauri-drag-region>°C</span>
             </div>
           </div>
         </div>
 
         {/* Multi-line History Graph */}
         {showGraph && (
-          <div className="flex flex-col gap-1 mt-1 animate-in fade-in slide-in-from-top-1 duration-300">
-            <div className="flex justify-between items-center text-[7px] text-gray-600 uppercase font-bold">
-              <div className="flex gap-2">
-                <span className="flex items-center gap-1"><div className="w-1 h-1 bg-blue-500" /> CTRL</span>
-                <span className="flex items-center gap-1"><div className="w-1 h-1 bg-emerald-500" /> MOS</span>
-                <span className="flex items-center gap-1"><div className="w-1 h-1 bg-[#FF5F00]" /> MOT</span>
+          <div className="flex flex-col gap-1 mt-1 animate-in fade-in slide-in-from-top-1 duration-300" data-tauri-drag-region>
+            <div className="flex justify-between items-center text-[7px] text-gray-600 uppercase font-bold" data-tauri-drag-region>
+              <div className="flex gap-2" data-tauri-drag-region>
+                <span className="flex items-center gap-1" data-tauri-drag-region><div className="w-1 h-1 bg-blue-500" /> CTRL</span>
+                <span className="flex items-center gap-1" data-tauri-drag-region><div className="w-1 h-1 bg-emerald-500" /> MOS</span>
+                <span className="flex items-center gap-1" data-tauri-drag-region><div className="w-1 h-1 bg-[#FF5F00]" /> MOT</span>
               </div>
-              <span className="flex items-center gap-1"><Activity size={8} /> 5M Trend</span>
+              <span className="flex items-center gap-1" data-tauri-drag-region><Activity size={8} /> 5M Trend</span>
             </div>
-            <div className="h-12 w-full relative bg-black/30 rounded overflow-hidden p-1 border border-white/5">
-               <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
+            <div className="h-12 w-full relative bg-black/30 rounded overflow-hidden p-1 border border-white/5" data-tauri-drag-region>
+               <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none" data-tauri-drag-region>
                  {/* Controller Graph (Blue) */}
                  <path
                    d={`M ${history.map((p, i) => `${(i / Math.max(history.length - 1, 1)) * 100},${40 - ((p.controller - 20) / 60) * 40}`).join(' L ')}`}
